@@ -1,0 +1,389 @@
+{
+  "model": "gemini-2.5-flash",
+  "videos": {
+    "clip-a": {
+      "generation": {
+        "prompt_tokens": 3491,
+        "output_tokens": 225,
+        "seconds": 6.55
+      },
+      "questions": [
+        {
+          "q": "What is the background color of the FIRST scene? Answer with one word.",
+          "type": "text",
+          "answer": "red",
+          "direct": {
+            "answer": "Red",
+            "prompt_tokens": 3196,
+            "output_tokens": 1,
+            "seconds": 3.06
+          },
+          "cdaf": {
+            "answer": "red",
+            "prompt_tokens": 285,
+            "output_tokens": 1,
+            "seconds": 1.76
+          }
+        },
+        {
+          "q": "What is the background color of the LAST scene? Answer with one word.",
+          "type": "text",
+          "answer": "green",
+          "direct": {
+            "answer": "Green",
+            "prompt_tokens": 3196,
+            "output_tokens": 1,
+            "seconds": 3.12
+          },
+          "cdaf": {
+            "answer": "Green",
+            "prompt_tokens": 285,
+            "output_tokens": 1,
+            "seconds": 2.03
+          }
+        },
+        {
+          "q": "How many scene changes (hard cuts) are in the video? Answer with a number.",
+          "type": "number",
+          "answer": 2,
+          "tolerance": 0,
+          "direct": {
+            "answer": "2",
+            "prompt_tokens": 3199,
+            "output_tokens": 1,
+            "seconds": 2.89
+          },
+          "cdaf": {
+            "answer": "2",
+            "prompt_tokens": 288,
+            "output_tokens": 1,
+            "seconds": 5.51
+          }
+        },
+        {
+          "q": "What is the first word shown on screen? Answer with one word.",
+          "type": "text",
+          "answer": "OCEAN",
+          "direct": {
+            "answer": "OCEAN",
+            "prompt_tokens": 3195,
+            "output_tokens": 2,
+            "seconds": 3.28
+          },
+          "cdaf": {
+            "answer": "OCEAN",
+            "prompt_tokens": 284,
+            "output_tokens": 2,
+            "seconds": 2.08
+          }
+        },
+        {
+          "q": "At what time in seconds does the word 'OCEAN' FIRST appear? Answer with a number.",
+          "type": "number",
+          "answer": 4.0,
+          "tolerance": 1.5,
+          "direct": {
+            "answer": "4",
+            "prompt_tokens": 3201,
+            "output_tokens": 1,
+            "seconds": 3.71
+          },
+          "cdaf": {
+            "answer": "4",
+            "prompt_tokens": 290,
+            "output_tokens": 1,
+            "seconds": 1.78
+          }
+        }
+      ]
+    },
+    "clip-b": {
+      "generation": {
+        "prompt_tokens": 3491,
+        "output_tokens": 299,
+        "seconds": 6.24
+      },
+      "questions": [
+        {
+          "q": "What is the background color of the FIRST scene? Answer with one word.",
+          "type": "text",
+          "answer": "black",
+          "direct": {
+            "answer": "Black",
+            "prompt_tokens": 3196,
+            "output_tokens": 1,
+            "seconds": 2.84
+          },
+          "cdaf": {
+            "answer": "Black",
+            "prompt_tokens": 359,
+            "output_tokens": 1,
+            "seconds": 1.67
+          }
+        },
+        {
+          "q": "What is the background color of the LAST scene? Answer with one word.",
+          "type": "text",
+          "answer": "orange",
+          "direct": {
+            "answer": "Orange",
+            "prompt_tokens": 3196,
+            "output_tokens": 1,
+            "seconds": 3.09
+          },
+          "cdaf": {
+            "answer": "Orange",
+            "prompt_tokens": 359,
+            "output_tokens": 1,
+            "seconds": 1.56
+          }
+        },
+        {
+          "q": "How many scene changes (hard cuts) are in the video? Answer with a number.",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 0,
+          "direct": {
+            "answer": "3",
+            "prompt_tokens": 3199,
+            "output_tokens": 1,
+            "seconds": 3.51
+          },
+          "cdaf": {
+            "answer": "3",
+            "prompt_tokens": 362,
+            "output_tokens": 1,
+            "seconds": 2.62
+          }
+        },
+        {
+          "q": "What is the first word shown on screen? Answer with one word.",
+          "type": "text",
+          "answer": "LAUNCH",
+          "direct": {
+            "answer": "LAUNCH",
+            "prompt_tokens": 3195,
+            "output_tokens": 1,
+            "seconds": 2.93
+          },
+          "cdaf": {
+            "answer": "LAUNCH",
+            "prompt_tokens": 358,
+            "output_tokens": 1,
+            "seconds": 1.86
+          }
+        },
+        {
+          "q": "At what time in seconds does the word 'LAUNCH' FIRST appear? Answer with a number.",
+          "type": "number",
+          "answer": 0.0,
+          "tolerance": 1.5,
+          "direct": {
+            "answer": "0",
+            "prompt_tokens": 3200,
+            "output_tokens": 1,
+            "seconds": 3.51
+          },
+          "cdaf": {
+            "answer": "0.0",
+            "prompt_tokens": 363,
+            "output_tokens": 3,
+            "seconds": 2.05
+          }
+        }
+      ]
+    },
+    "clip-c": {
+      "generation": {
+        "prompt_tokens": 2965,
+        "output_tokens": 172,
+        "seconds": 4.71
+      },
+      "questions": [
+        {
+          "q": "What is the background color of the FIRST scene? Answer with one word.",
+          "type": "text",
+          "answer": "yellow",
+          "direct": {
+            "answer": "Yellow",
+            "prompt_tokens": 2670,
+            "output_tokens": 1,
+            "seconds": 3.08
+          },
+          "cdaf": {
+            "answer": "Yellow",
+            "prompt_tokens": 232,
+            "output_tokens": 1,
+            "seconds": 1.45
+          }
+        },
+        {
+          "q": "What is the background color of the LAST scene? Answer with one word.",
+          "type": "text",
+          "answer": "cyan",
+          "direct": {
+            "answer": "Cyan",
+            "prompt_tokens": 2670,
+            "output_tokens": 1,
+            "seconds": 3.5
+          },
+          "cdaf": {
+            "answer": "cyan",
+            "prompt_tokens": 232,
+            "output_tokens": 1,
+            "seconds": 2.37
+          }
+        },
+        {
+          "q": "How many scene changes (hard cuts) are in the video? Answer with a number.",
+          "type": "number",
+          "answer": 1,
+          "tolerance": 0,
+          "direct": {
+            "answer": "1",
+            "prompt_tokens": 2673,
+            "output_tokens": 1,
+            "seconds": 3.4
+          },
+          "cdaf": {
+            "answer": "1",
+            "prompt_tokens": 235,
+            "output_tokens": 1,
+            "seconds": 2.27
+          }
+        },
+        {
+          "q": "What is the first word shown on screen? Answer with one word.",
+          "type": "text",
+          "answer": "SUMMER",
+          "direct": {
+            "answer": "SUMMER",
+            "prompt_tokens": 2669,
+            "output_tokens": 2,
+            "seconds": 3.39
+          },
+          "cdaf": {
+            "answer": "SUMMER",
+            "prompt_tokens": 231,
+            "output_tokens": 2,
+            "seconds": 2.58
+          }
+        },
+        {
+          "q": "At what time in seconds does the word 'SUMMER' FIRST appear? Answer with a number.",
+          "type": "number",
+          "answer": 5.0,
+          "tolerance": 1.5,
+          "direct": {
+            "answer": "5",
+            "prompt_tokens": 2675,
+            "output_tokens": 1,
+            "seconds": 2.47
+          },
+          "cdaf": {
+            "answer": "5.1",
+            "prompt_tokens": 237,
+            "output_tokens": 3,
+            "seconds": 2.53
+          }
+        }
+      ]
+    },
+    "clip-d": {
+      "generation": {
+        "prompt_tokens": 3491,
+        "output_tokens": 271,
+        "seconds": 5.49
+      },
+      "questions": [
+        {
+          "q": "What is the background color of the FIRST scene? Answer with one word.",
+          "type": "text",
+          "answer": "blue",
+          "direct": {
+            "answer": "Blue",
+            "prompt_tokens": 3196,
+            "output_tokens": 1,
+            "seconds": 5.02
+          },
+          "cdaf": {
+            "answer": "blue",
+            "prompt_tokens": 331,
+            "output_tokens": 1,
+            "seconds": 1.66
+          }
+        },
+        {
+          "q": "What is the background color of the LAST scene? Answer with one word.",
+          "type": "text",
+          "answer": "red",
+          "direct": {
+            "answer": "Red",
+            "prompt_tokens": 3196,
+            "output_tokens": 1,
+            "seconds": 3.61
+          },
+          "cdaf": {
+            "answer": "Red",
+            "prompt_tokens": 331,
+            "output_tokens": 1,
+            "seconds": 2.05
+          }
+        },
+        {
+          "q": "How many scene changes (hard cuts) are in the video? Answer with a number.",
+          "type": "number",
+          "answer": 3,
+          "tolerance": 0,
+          "direct": {
+            "answer": "4",
+            "prompt_tokens": 3199,
+            "output_tokens": 1,
+            "seconds": 4.46
+          },
+          "cdaf": {
+            "answer": "3",
+            "prompt_tokens": 334,
+            "output_tokens": 1,
+            "seconds": 3.26
+          }
+        },
+        {
+          "q": "What is the first word shown on screen? Answer with one word.",
+          "type": "text",
+          "answer": "ALERT",
+          "direct": {
+            "answer": "ALERT",
+            "prompt_tokens": 3195,
+            "output_tokens": 1,
+            "seconds": 4.1
+          },
+          "cdaf": {
+            "answer": "ALERT",
+            "prompt_tokens": 330,
+            "output_tokens": 1,
+            "seconds": 1.57
+          }
+        },
+        {
+          "q": "At what time in seconds does the word 'ALERT' FIRST appear? Answer with a number.",
+          "type": "number",
+          "answer": 3.0,
+          "tolerance": 1.5,
+          "direct": {
+            "answer": "3",
+            "prompt_tokens": 3200,
+            "output_tokens": 1,
+            "seconds": 4.15
+          },
+          "cdaf": {
+            "answer": "2.9",
+            "prompt_tokens": 335,
+            "output_tokens": 3,
+            "seconds": 2.1
+          }
+        }
+      ]
+    }
+  }
+}

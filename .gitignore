@@ -1,0 +1,11 @@
+benchmarks/testset/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.env
+.DS_Store
+Thumbs.db

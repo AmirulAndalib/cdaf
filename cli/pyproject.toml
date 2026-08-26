@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cdaf"
+version = "1.0.0"
+description = "CDAF (Cached Descriptive Asset File) — generate and validate timestamped descriptive sidecars for video, so AI agents stop re-analyzing the same footage."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "CDAF Contributors" }]
+keywords = ["video", "ai", "agents", "sidecar", "gemini", "captioning", "cache"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Multimedia :: Video",
+]
+dependencies = []
+
+[project.optional-dependencies]
+generate = ["google-genai>=1.0.0"]
+
+[project.scripts]
+cdaf = "cdaf.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["cdaf*"]
