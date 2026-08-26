@@ -7,8 +7,18 @@ Model: `gemini-2.5-flash` · Videos: 4 · Questions: 20 per condition
 | Direct video | 19/20 (95%) | 3,066 | 3.46 |
 | CDAF sidecar | 20/20 (100%) | 303 | 2.24 |
 
-- **Per-question prompt-token ratio (direct / cdaf): 10.1x**
-- One-time sidecar generation cost: 14,405 tokens across all videos — amortized after ~4.7 direct-video questions.
+- **Per-question prompt-token ratio (direct / cdaf): 10.12x**
+- Sidecar generation: 14,405 tokens total, 3,601 per video (prompt + output).
+- Each question answered from the sidecar saves 2,763 prompt tokens, so generation **breaks even after ~1.30 questions per video**.
+
+## Per-clip detail
+
+| Clip | Generation tokens | Direct tokens/q | CDAF tokens/q | D/C | Direct latency | CDAF latency |
+|---|---|---|---|---|---|---|
+| clip-a | 3,716 | 3,197.4 | 286.4 | 11.16x | 3.21 s | 2.63 s |
+| clip-b | 3,790 | 3,197.2 | 360.2 | 8.88x | 3.18 s | 1.95 s |
+| clip-c | 3,137 | 2,671.4 | 233.4 | 11.45x | 3.17 s | 2.24 s |
+| clip-d | 3,762 | 3,197.2 | 332.2 | 9.62x | 4.27 s | 2.13 s |
 
 ## Per-question detail
 

@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 380" width="1280" height="380" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <style>
+      .title { fill: #14344a; font-size: 19px; font-weight: 700; text-anchor: middle; }
+      .axis  { stroke: #14344a; stroke-width: 1.4; }
+      .grid  { stroke: #e3e8eb; stroke-width: 1; }
+      .ticklbl { fill: #6b7780; font-size: 12px; text-anchor: end; }
+      .xlbl  { fill: #14344a; font-size: 14px; text-anchor: middle; }
+      .val   { fill: #14344a; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .ylbl  { fill: #6b7780; font-size: 12px; text-anchor: middle; }
+      .direct{ fill: #1a6e87; }
+      .cdaf  { fill: #e8801f; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="380" fill="#ffffff"/>
+
+  <!-- ══ panel 1: accuracy (max 100) ═══════════════════════════════ -->
+  <text class="title" x="230" y="36">Accuracy</text>
+  <text class="ylbl" x="26" y="180" transform="rotate(-90 26 180)">Correct (%)</text>
+
+  <line class="grid" x1="100" y1="280" x2="380" y2="280"/>
+  <line class="grid" x1="100" y1="225" x2="380" y2="225"/>
+  <line class="grid" x1="100" y1="170" x2="380" y2="170"/>
+  <line class="grid" x1="100" y1="115" x2="380" y2="115"/>
+  <line class="grid" x1="100" y1="60"  x2="380" y2="60"/>
+  <text class="ticklbl" x="92" y="285">0</text>
+  <text class="ticklbl" x="92" y="230">25</text>
+  <text class="ticklbl" x="92" y="175">50</text>
+  <text class="ticklbl" x="92" y="120">75</text>
+  <text class="ticklbl" x="92" y="65">100</text>
+
+  <rect class="direct" x="140" y="71"  width="80" height="209"/>
+  <rect class="cdaf"   x="260" y="60"  width="80" height="220"/>
+  <text class="val" x="180" y="63">95</text>
+  <text class="val" x="300" y="52">100</text>
+
+  <line class="axis" x1="100" y1="280" x2="380" y2="280"/>
+  <line class="axis" x1="100" y1="55"  x2="100" y2="280"/>
+  <text class="xlbl" x="180" y="303">Direct</text>
+  <text class="xlbl" x="300" y="303">CDAF</text>
+
+  <!-- ══ panel 2: prompt tokens (max 3200) ═════════════════════════ -->
+  <text class="title" x="655" y="36">Prompt-token cost</text>
+  <text class="ylbl" x="451" y="180" transform="rotate(-90 451 180)">Tokens / question</text>
+
+  <line class="grid" x1="525" y1="280" x2="805" y2="280"/>
+  <line class="grid" x1="525" y1="211" x2="805" y2="211"/>
+  <line class="grid" x1="525" y1="143" x2="805" y2="143"/>
+  <line class="grid" x1="525" y1="74"  x2="805" y2="74"/>
+  <text class="ticklbl" x="517" y="285">0</text>
+  <text class="ticklbl" x="517" y="216">1,000</text>
+  <text class="ticklbl" x="517" y="148">2,000</text>
+  <text class="ticklbl" x="517" y="79">3,000</text>
+
+  <rect class="direct" x="565" y="69"  width="80" height="211"/>
+  <rect class="cdaf"   x="685" y="259" width="80" height="21"/>
+  <text class="val" x="605" y="61">3,066</text>
+  <text class="val" x="725" y="251">303</text>
+
+  <line class="axis" x1="525" y1="280" x2="805" y2="280"/>
+  <line class="axis" x1="525" y1="55"  x2="525" y2="280"/>
+  <text class="xlbl" x="605" y="303">Direct</text>
+  <text class="xlbl" x="725" y="303">CDAF</text>
+
+  <!-- ══ panel 3: latency (max 4) ══════════════════════════════════ -->
+  <text class="title" x="1080" y="36">End-to-end latency</text>
+  <text class="ylbl" x="876" y="180" transform="rotate(-90 876 180)">Seconds / question</text>
+
+  <line class="grid" x1="950" y1="280" x2="1230" y2="280"/>
+  <line class="grid" x1="950" y1="225" x2="1230" y2="225"/>
+  <line class="grid" x1="950" y1="170" x2="1230" y2="170"/>
+  <line class="grid" x1="950" y1="115" x2="1230" y2="115"/>
+  <line class="grid" x1="950" y1="60"  x2="1230" y2="60"/>
+  <text class="ticklbl" x="942" y="285">0</text>
+  <text class="ticklbl" x="942" y="230">1</text>
+  <text class="ticklbl" x="942" y="175">2</text>
+  <text class="ticklbl" x="942" y="120">3</text>
+  <text class="ticklbl" x="942" y="65">4</text>
+
+  <rect class="direct" x="990"  y="90"  width="80" height="190"/>
+  <rect class="cdaf"   x="1110" y="157" width="80" height="123"/>
+  <text class="val" x="1030" y="82">3.46</text>
+  <text class="val" x="1150" y="149">2.24</text>
+
+  <line class="axis" x1="950" y1="280" x2="1230" y2="280"/>
+  <line class="axis" x1="950" y1="55"  x2="950" y2="280"/>
+  <text class="xlbl" x="1030" y="303">Direct</text>
+  <text class="xlbl" x="1150" y="303">CDAF</text>
+
+  <!-- caption -->
+  <text x="640" y="345" fill="#6b7780" font-size="13.5" text-anchor="middle">Measured over 20 questions per condition (gemini-2.5-flash). Cost and latency differences are large;</text>
+  <text x="640" y="364" fill="#6b7780" font-size="13.5" text-anchor="middle">the small accuracy difference should not be read as statistical superiority.</text>
+</svg>

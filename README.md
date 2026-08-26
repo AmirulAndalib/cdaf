@@ -17,6 +17,8 @@ footage/
 └── sunset-drone.cdaf    ← what agents read instead of watching
 ```
 
+![CDAF turns repeated per-task video analysis into one per-asset description pass followed by verified text reads](figures/concept.svg)
+
 **Measured** (reproducible benchmark, `gemini-2.5-flash`, 20 questions): answering
 from the sidecar matched direct video analysis on accuracy — **20/20 vs 19/20** — at
 **10.1× fewer prompt tokens per question** (303 vs 3,066) and ~35% lower latency. The
@@ -169,13 +171,17 @@ python benchmarks/bench.py run     # both conditions via Gemini (needs GEMINI_AP
 python benchmarks/bench.py report  # writes benchmarks/RESULTS.md
 ```
 
+![Accuracy, prompt-token cost, and latency for 20 questions in each condition](figures/benchmark.svg)
+
 | Condition | Accuracy | Mean prompt tokens/question | Mean latency |
 |---|---|---|---|
 | Direct video | 19/20 (95%) | 3,066 | 3.46 s |
 | **CDAF sidecar** | **20/20 (100%)** | **303** | **2.24 s** |
 
-One-time generation amortizes after ~1.2 direct questions per video. Full per-question
-detail: [benchmarks/RESULTS.md](benchmarks/RESULTS.md).
+Each sidecar-answered question saves 2,763 prompt tokens, so generating a sidecar
+(3,601 tokens) **breaks even after ≈1.3 questions per video** — everything after that
+is the ~10× saving. Per-clip and per-question detail:
+[benchmarks/RESULTS.md](benchmarks/RESULTS.md).
 
 ## 📝 Paper
 

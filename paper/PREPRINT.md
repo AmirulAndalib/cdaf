@@ -22,7 +22,7 @@ instead of re-processing the video — tens of thousands of multimodal tokens.
 On a fully reproducible synthetic benchmark with objective ground truth, sidecar-mediated
 question answering matches direct video analysis on accuracy (100% vs 95% in our run)
 while using **10.1× fewer prompt tokens per question** and ~35% less latency; the
-one-time generation cost amortizes after roughly one direct question per video, and
+one-time generation cost amortizes after ≈1.3 questions per video, and
 the token ratio grows linearly with clip duration (~50× for 60-second footage). In production use at Emora Health, the same pattern reduced
 AI costs of video-heavy creative workflows to approximately **1/25th**. We release the
 format specification, a reference implementation, an agent skill, and the benchmark
@@ -181,9 +181,10 @@ direct-video error (miscounting hard cuts in a video with repeated scenes) is
 anecdotal but illustrative: the sidecar is produced by *one careful, dedicated
 description pass*, whereas direct answering re-derives structure from pixels on every
 query; the cache can be more reliable than the thing it caches. One-time generation
-cost was 14,405 tokens across all four videos (~3,600/video, roughly the cost of a
-single direct question) — the sidecar pays for itself after **~1.2 direct questions
-per video**, and everything afterward is the 10× saving.
+cost was 14,405 tokens across all four videos (3,601/video, roughly the cost of a
+single direct question). Each sidecar-answered question saves 2,763 prompt tokens, so
+a sidecar pays for itself after **≈1.30 questions per video**; everything afterward is
+the ~10× saving.
 
 Two effects compound beyond the headline ratio. First, the token economics scale with
 duration: direct-video cost grows linearly with length (~256 tokens/s observed,

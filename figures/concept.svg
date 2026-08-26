@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 360" width="1400" height="360" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14344a"/>
+    </marker>
+    <style>
+      .box  { stroke: #14344a; stroke-width: 1.6; rx: 6; }
+      .asset{ fill: #dbe9ef; }
+      .step { fill: #dbe9ef; }
+      .cache{ fill: #d8ecd9; }
+      .task { fill: #fbe3ce; }
+      .lbl  { fill: #14344a; font-size: 16px; text-anchor: middle; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 15px; }
+      .title{ fill: #14344a; font-size: 20px; font-weight: 700; text-anchor: middle; }
+      .cap  { fill: #8a8a8a; font-size: 13px; text-anchor: middle; }
+      .edge { stroke: #14344a; stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1400" height="360" fill="#ffffff"/>
+
+  <!-- ── left panel: direct exposure ───────────────────────────────── -->
+  <text class="title" x="300" y="40">Direct video exposure on every task</text>
+
+  <rect class="box asset" x="30"  y="150" width="150" height="70"/>
+  <text class="lbl" x="105" y="180">video</text>
+  <text class="lbl" x="105" y="201">asset</text>
+
+  <rect class="box task" x="250" y="80"  width="190" height="64"/>
+  <text class="lbl" x="345" y="105">Task 1</text>
+  <text class="lbl" x="345" y="127">video QA</text>
+
+  <rect class="box task" x="250" y="160" width="190" height="64"/>
+  <text class="lbl" x="345" y="185">Task 2</text>
+  <text class="lbl" x="345" y="207">clip search</text>
+
+  <rect class="box task" x="250" y="240" width="190" height="64"/>
+  <text class="lbl" x="345" y="265">Task 3</text>
+  <text class="lbl" x="345" y="287">cut list</text>
+
+  <path class="edge" d="M 182 178 L 246 118"/>
+  <path class="edge" d="M 182 185 L 246 190"/>
+  <path class="edge" d="M 182 195 L 246 264"/>
+
+  <text class="cap" x="300" y="328">multimodal tokenization and latency</text>
+  <text class="cap" x="300" y="346">recur for every edge</text>
+
+  <line x1="620" y1="55" x2="620" y2="310" stroke="#d0d7dc" stroke-width="1.4"/>
+
+  <!-- ── right panel: CDAF ─────────────────────────────────────────── -->
+  <text class="title" x="1010" y="40">CDAF: one visual pass, many text reads</text>
+
+  <rect class="box asset" x="670" y="150" width="125" height="70"/>
+  <text class="lbl" x="732" y="180">video</text>
+  <text class="lbl" x="732" y="201">asset</text>
+
+  <rect class="box step" x="825" y="150" width="125" height="70"/>
+  <text class="lbl" x="887" y="180">describe</text>
+  <text class="lbl" x="887" y="201">once</text>
+
+  <rect class="box cache" x="980" y="150" width="135" height="70"/>
+  <text class="lbl" x="1047" y="180">SHA-256</text>
+  <text class="lbl mono" x="1047" y="202">.cdaf</text>
+
+  <rect class="box task" x="1160" y="80"  width="190" height="64"/>
+  <text class="lbl" x="1255" y="105">Task 1</text>
+  <text class="lbl" x="1255" y="127">video QA</text>
+
+  <rect class="box task" x="1160" y="160" width="190" height="64"/>
+  <text class="lbl" x="1255" y="185">Task 2</text>
+  <text class="lbl" x="1255" y="207">clip search</text>
+
+  <rect class="box task" x="1160" y="240" width="190" height="64"/>
+  <text class="lbl" x="1255" y="265">Task 3</text>
+  <text class="lbl" x="1255" y="287">cut list</text>
+
+  <path class="edge" d="M 797 185 L 821 185"/>
+  <path class="edge" d="M 952 185 L 976 185"/>
+  <path class="edge" d="M 1117 178 L 1156 118"/>
+  <path class="edge" d="M 1117 185 L 1156 190"/>
+  <path class="edge" d="M 1117 195 L 1156 264"/>
+
+  <text class="cap" x="1010" y="328">one multimodal generation cost; downstream</text>
+  <text class="cap" x="1010" y="346">tasks consume portable, hash-verified text</text>
+</svg>

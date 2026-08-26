@@ -248,9 +248,10 @@ def cmd_report(args) -> int:
                              q[cond].get("prompt_tokens")))
 
     n = tally["direct"][1]
+    n_videos = len(results["videos"])
     lines = [
         "# CDAF Benchmark Results", "",
-        f"Model: `{results['model']}` · Videos: {len(results['videos'])} · "
+        f"Model: `{results['model']}` · Videos: {n_videos} · "
         f"Questions: {n} per condition", "",
         "| Condition | Accuracy | Mean prompt tokens / question | Mean latency (s) |",
         "|---|---|---|---|",
@@ -259,14 +260,38 @@ def cmd_report(args) -> int:
         c, total, tok, sec = tally[cond]
         lines.append(f"| {label} | {c}/{total} ({100*c/total:.0f}%) "
                      f"| {tok/total:,.0f} | {sec/total:.2f} |")
-    ratio = (tally["direct"][2] / total) / max(tally["cdaf"][2] / total, 1)
-    breakeven = gen_tokens_total / max(tally["direct"][2] / total, 1)
+
+    direct_mean = tally["direct"][2] / n
+    cdaf_mean = tally["cdaf"][2] / n
+    ratio = direct_mean / max(cdaf_mean, 1)
+    gen_per_video = gen_tokens_total / n_videos
+    # Break-even: generating one sidecar costs `gen_per_video` tokens and saves
+    # (direct_mean - cdaf_mean) tokens per subsequent question on that video.
+    saving = direct_mean - cdaf_mean
+    breakeven = gen_per_video / saving if saving > 0 else float("inf")
     lines += [
         "",
-        f"- **Per-question prompt-token ratio (direct / cdaf): "
-        f"{ratio:.1f}x**",
-        f"- One-time sidecar generation cost: {gen_tokens_total:,} tokens across all "
-        f"videos — amortized after ~{breakeven:.1f} direct-video questions.",
+        f"- **Per-question prompt-token ratio (direct / cdaf): {ratio:.2f}x**",
+        f"- Sidecar generation: {gen_tokens_total:,} tokens total, "
+        f"{gen_per_video:,.0f} per video (prompt + output).",
+        f"- Each question answered from the sidecar saves {saving:,.0f} prompt tokens, "
+        f"so generation **breaks even after ~{breakeven:.2f} questions per video**.",
+        "", "## Per-clip detail", "",
+        "| Clip | Generation tokens | Direct tokens/q | CDAF tokens/q | D/C | "
+        "Direct latency | CDAF latency |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    for name, entry in results["videos"].items():
+        qs = entry["questions"]
+        gen = (entry["generation"].get("prompt_tokens") or 0) + \
+              (entry["generation"].get("output_tokens") or 0)
+        dm = sum(q["direct"].get("prompt_tokens") or 0 for q in qs) / len(qs)
+        cm = sum(q["cdaf"].get("prompt_tokens") or 0 for q in qs) / len(qs)
+        dl = sum(q["direct"].get("seconds") or 0 for q in qs) / len(qs)
+        cl = sum(q["cdaf"].get("seconds") or 0 for q in qs) / len(qs)
+        lines.append(f"| {name} | {gen:,} | {dm:,.1f} | {cm:,.1f} | "
+                     f"{dm/max(cm,1):.2f}x | {dl:.2f} s | {cl:.2f} s |")
+    lines += [
         "", "## Per-question detail", "",
         "| Video | Question | Condition | Answer | Correct | Prompt tokens |",
         "|---|---|---|---|---|---|",
