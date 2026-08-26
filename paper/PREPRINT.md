@@ -261,7 +261,7 @@ CDAF turns video understanding from a per-task expense into a per-asset investme
 using nothing more exotic than a text file, a hash, and a convention — deliberately
 boring machinery, chosen because boring machinery is what gets adopted. The
 specification, tooling, agent skill, and benchmark are open source (MIT) at
-**[repository URL]**.
+**https://github.com/UditAkhourii/cdaf**.
 
 ## References
 

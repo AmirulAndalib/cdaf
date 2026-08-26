@@ -24,6 +24,10 @@ dependencies = []
 [project.optional-dependencies]
 generate = ["google-genai>=1.0.0"]
 
+[project.urls]
+Homepage = "https://github.com/UditAkhourii/cdaf"
+Repository = "https://github.com/UditAkhourii/cdaf"
+
 [project.scripts]
 cdaf = "cdaf.cli:main"
 
