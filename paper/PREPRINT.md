@@ -245,6 +245,31 @@ next session, the next agent, and the next model pay the same 24k, not another 4
   but does not eliminate the gap. Our benchmark's questions are answerable from a
   competent description; adversarially fine-grained questions would favor direct
   analysis.
+- **Confabulation is a distinct failure mode from omission, and a worse one.** The
+  ceiling above concerns detail the pass *omits*; in practice a generator shown a whole
+  video at once also *adds*. Reported independently against frame-by-frame ground truth
+  on a 30-second, 16-shot commercial, our default generator produced three fabricated
+  segments: most sharply, a repair the footage deliberately implies but never depicts
+  was stated flatly as having been performed. Such entries are fluent, narratively
+  plausible, and indistinguishable within the file from correct ones — and because the
+  consuming agent reads the sidecar *instead of* the video, no downstream step can
+  catch them. Omission degrades a sidecar's usefulness; addition corrupts it silently.
+  Two mitigations are available and neither requires a format change: describing each
+  shot in isolation, which removes the cross-shot context a false causal chain is built
+  from; and instructing consumers to treat completion claims as unverified (now in the
+  reference agent skill). Quantifying confabulation rate across generators is the most
+  valuable open measurement we can name.
+- **Fine visual state is unstable, not merely absent.** Mark-up such as strike-through
+  on a handwritten list was, in reported testing, either omitted or recovered at chance
+  — five runs over one identical frame scoring 3, 3, 3, 1, and 5 of 6 — suggesting the
+  property is not resolved at all rather than resolved imperfectly. Where such a
+  property carries the meaning of a shot, a sidecar can faithfully record the text and
+  still miss the point of it.
+- **Segment boundaries are inferred, not measured.** Against container scene detection,
+  model-inferred boundaries drifted by up to 1.4 s, missed real cuts, and invented
+  others. Since cut-list generation is one of the format's headline uses (§6), a
+  producer that derives boundaries from the container is strictly more trustworthy
+  here, and consumers should verify boundaries before cutting on them.
 - **Descriptions are not embeddings.** Semantic visual similarity search may still
   want vector indexes; CDAF's Tags/Segments support lexical and text-embedding
   retrieval only. (A future optional section could carry embedding pointers.)

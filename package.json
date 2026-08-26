@@ -1,6 +1,6 @@
 {
   "name": "cdaf-skill",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Install the CDAF agent skill — teaches AI agents to read .cdaf sidecars (cached, hash-verified video descriptions) instead of re-analyzing the same footage.",
   "type": "module",
   "bin": {

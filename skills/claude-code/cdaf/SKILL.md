@@ -20,8 +20,8 @@ Before analyzing ANY video file (`.mp4`, `.mov`, `.mkv`, `.webm`, `.avi`, `.m4v`
 1. **Check for a sidecar**: same directory, same basename, `.cdaf` extension.
 2. **Verify freshness** before trusting it (see below). A stale sidecar describes an
    older version of the video — using it is worse than not having one.
-3. **If fresh**: read the sidecar and use it as ground truth for the video's content.
-   Do not also process the video.
+3. **If fresh**: read the sidecar instead of processing the video. Use it as the
+   account of what the video contains — within the limits below.
 4. **If missing or stale**: generate one (see below) so the cost is paid once. If you
    cannot generate, fall back to direct video analysis.
 
@@ -47,11 +47,42 @@ verifies the hash automatically and refuses to print a stale sidecar).
 Format: a `key: value` header between `--- CDAF/1.0` and `---`, then markdown:
 
 - `## Summary` — what the clip is
-- `## Segments` — `[MM:SS.d-MM:SS.d] description` lines covering the whole video;
-  these timestamps are reliable for cut lists, trims, and frame extraction
+- `## Segments` — `[MM:SS.d-MM:SS.d] description` lines covering the whole video
+  (see the trust note below before cutting on these timestamps)
 - `## Transcript` — spoken words with timestamps (or `(no speech)`)
 - `## On-screen Text` — visible text with timestamps (or `(none)`)
 - `## Tags` — retrieval keywords
+
+## How much to trust a fresh sidecar
+
+Freshness proves the sidecar describes *these exact bytes*. It does not prove the
+description is complete or correct — it is the record of one model's pass. Three limits
+matter when a mistake is expensive:
+
+- **Timestamps are approximate.** Boundaries inferred by a model drift (over a second
+  on measured clips), miss real cuts, and occasionally mark cuts that do not exist.
+  They are fine for locating, ranking, and rough trims. Before cutting on them, verify
+  against the container:
+  ```bash
+  ffmpeg -v error -i clip.mp4 -vf "select='gt(scene,0.1)',metadata=print:file=-" -f null -
+  ```
+  If the header carries `x-shot-source: ffmpeg-scene-detect@...`, the boundaries were
+  measured from the container and need no such check.
+
+- **Descriptions can add, not just omit.** Shown a whole video at once, a model may
+  narrate the outcome a clip implies but never shows — reporting that a task was
+  completed when the footage only shows it being started. Such entries are fluent,
+  specific, and indistinguishable from correct ones. Treat any claim that something
+  was **finished, fixed, repaired, or achieved** as unverified: check the frames before
+  relying on it, and say the sidecar is your source when you report it. An omission is
+  a visible gap; an addition reads exactly like a fact.
+
+- **Fine visual state is unreliable.** Strike-through on a list, small or stylised text,
+  subtle motion, and similar details are often missed or reported at chance. If such a
+  detail carries the meaning of the shot, look at the frame.
+
+None of this argues for re-watching by default — that would forfeit the entire saving.
+Verify the specific claim your decision rests on, not the whole clip.
 
 ## Generating sidecars
 
