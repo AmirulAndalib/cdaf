@@ -1,6 +1,7 @@
 # CDAF — Cached Descriptive Asset Files
 
 [![tests](https://github.com/UditAkhourii/cdaf/actions/workflows/tests.yml/badge.svg)](https://github.com/UditAkhourii/cdaf/actions/workflows/tests.yml)
+[![npm](https://img.shields.io/npm/v/cdaf-skill.svg)](https://www.npmjs.com/package/cdaf-skill)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Spec: v1.0](https://img.shields.io/badge/spec-v1.0-blue.svg)](SPEC.md)
 
@@ -24,8 +25,6 @@ your coding agent checks for a `.cdaf` sidecar and verifies it against the video
 ```bash
 pip install "cdaf[generate]" && cdaf generate ./footage
 ```
-
-> Not on npm yet — until the release lands: `npx github:UditAkhourii/cdaf`
 
 ```
 footage/
