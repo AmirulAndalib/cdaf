@@ -207,7 +207,7 @@ is the ~10× saving. Per-clip and per-question detail:
 
 ## 📝 Paper
 
-**[https://zenodo.org/records/22110594]([paper/PREPRINT.md](https://zenodo.org/records/22110594))** — *Cached Descriptive Asset Files (CDAF):
+**[https://zenodo.org/records/22110594](https://zenodo.org/records/22110594)** — *Cached Descriptive Asset Files (CDAF):
 A Sidecar Format for Token-Efficient Video Understanding in Agentic Pipelines* —
 arXiv draft (cs.MM / cs.AI): format rationale, benchmark methodology and results,
 production case study, integration analysis for agentic editors, limitations.
