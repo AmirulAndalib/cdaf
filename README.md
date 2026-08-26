@@ -11,6 +11,22 @@ lives next to the video file with the same basename. Generate it once, and every
 agent that touches that footage afterward reads a few hundred text tokens instead of
 running a full video-understanding pass.
 
+### Teach your agent the format — one command
+
+```bash
+npx cdaf-skill
+```
+
+Works on Windows, macOS, and Linux. That installs the [agent skill](#-agent-skill), so
+your coding agent checks for a `.cdaf` sidecar and verifies it against the video's hash
+*before* it ever spends tokens watching. Then describe your footage once:
+
+```bash
+pip install "cdaf[generate]" && cdaf generate ./footage
+```
+
+> Not on npm yet — until the release lands: `npx github:UditAkhourii/cdaf`
+
 ```
 footage/
 ├── sunset-drone.mp4     ← plays everywhere, untouched
@@ -129,14 +145,8 @@ sidecar; verify freshness (size check for exploration, full hash for consequenti
 decisions); read it instead of watching; grep `.cdaf` files to search whole libraries;
 regenerate when stale.**
 
-Install it with one command — Windows, macOS, and Linux alike:
-
-```bash
-npx cdaf-skill
-```
-
-> Not on npm yet. Until the release lands, the same command works straight from this
-> repo: `npx github:UditAkhourii/cdaf`
+Install it with `npx cdaf-skill` (see [above](#teach-your-agent-the-format--one-command)),
+or pick a scope:
 
 | Command | Installs to |
 |---|---|
