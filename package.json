@@ -1,0 +1,38 @@
+{
+  "name": "cdaf-skill",
+  "version": "1.0.0",
+  "description": "Install the CDAF agent skill — teaches AI agents to read .cdaf sidecars (cached, hash-verified video descriptions) instead of re-analyzing the same footage.",
+  "type": "module",
+  "bin": {
+    "cdaf-skill": "bin/install-skill.mjs"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "SPEC.md"
+  ],
+  "keywords": [
+    "cdaf",
+    "video",
+    "ai-agents",
+    "claude-code",
+    "agent-skill",
+    "sidecar",
+    "video-understanding",
+    "llm",
+    "tokens"
+  ],
+  "license": "MIT",
+  "author": "Udit Akhouri",
+  "homepage": "https://github.com/UditAkhourii/cdaf#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UditAkhourii/cdaf.git"
+  },
+  "bugs": {
+    "url": "https://github.com/UditAkhourii/cdaf/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

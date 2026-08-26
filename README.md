@@ -34,7 +34,7 @@ at scale, this pattern cut video-workflow AI costs to roughly **1/25th**.
 | **[Spec](#-spec)** | [SPEC.md](SPEC.md) | The normative format definition (v1.0) |
 | **[Engine](#-engine-core-library)** | [cli/cdaf/](cli/cdaf/) | Python library: parse, validate, hash, generate |
 | **[CLI](#-cli)** | [cli/](cli/) | `cdaf` command: generate / validate / read / status |
-| **[Agent Skill](#-agent-skill)** | [skills/](skills/claude-code/cdaf/SKILL.md) | Teaches agents the sidecar-first protocol |
+| **[Agent Skill](#-agent-skill)** | [skills/](skills/claude-code/cdaf/SKILL.md) | Teaches agents the sidecar-first protocol · `npx cdaf-skill` |
 | **[Benchmarks](#-benchmarks)** | [benchmarks/](benchmarks/) | Reproducible eval: sidecar vs direct video |
 | **[Paper](#-paper)** | [paper/PREPRINT.md](paper/PREPRINT.md) | arXiv preprint draft built on the benchmark |
 
@@ -129,13 +129,25 @@ sidecar; verify freshness (size check for exploration, full hash for consequenti
 decisions); read it instead of watching; grep `.cdaf` files to search whole libraries;
 regenerate when stale.**
 
-Claude Code:
+Install it with one command — Windows, macOS, and Linux alike:
 
 ```bash
-cp -r skills/claude-code/cdaf ~/.claude/skills/cdaf
+npx cdaf-skill
 ```
 
-(Windows: copy `skills\claude-code\cdaf` to `%USERPROFILE%\.claude\skills\cdaf`.)
+> Not on npm yet. Until the release lands, the same command works straight from this
+> repo: `npx github:UditAkhourii/cdaf`
+
+| Command | Installs to |
+|---|---|
+| `npx cdaf-skill` | `~/.claude/skills/cdaf` (all your projects) |
+| `npx cdaf-skill --project` | `./.claude/skills/cdaf` (this project only) |
+| `npx cdaf-skill --dir <path>` | anywhere you want |
+| `npx cdaf-skill --print` | stdout — for pasting into other agent frameworks |
+
+Re-running is safe: an unchanged skill is left alone, and a modified one is backed up
+to `SKILL.md.bak` before updating. Prefer to copy it by hand? The file is
+[skills/claude-code/cdaf/SKILL.md](skills/claude-code/cdaf/SKILL.md).
 
 Any other agent framework — the whole contract is one system-prompt paragraph:
 
