@@ -1,5 +1,9 @@
 # CDAF — Cached Descriptive Asset Files
 
+[![tests](https://github.com/UditAkhourii/cdaf/actions/workflows/tests.yml/badge.svg)](https://github.com/UditAkhourii/cdaf/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Spec: v1.0](https://img.shields.io/badge/spec-v1.0-blue.svg)](SPEC.md)
+
 **Stop making AI agents watch the same video twice.**
 
 CDAF is an open sidecar format for video: a plain-text, timestamped description that
