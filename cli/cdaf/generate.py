@@ -1,4 +1,7 @@
-"""Generate a CDAF sidecar body from a video using Gemini (BYOK).
+"""Generate a CDAF sidecar body from a video.
+
+Two providers: Gemini (BYOK, default) and a local OpenAI-compatible endpoint
+(see local.py). Select with the `provider` argument or CDAF_PROVIDER.
 
 Requires the `google-genai` package (`pip install cdaf[generate]`) and a
 GEMINI_API_KEY (or GOOGLE_API_KEY) environment variable, or an explicit key.
@@ -16,6 +19,8 @@ from .probe import probe
 from .sidecar import SPEC_VERSION, Sidecar, hash_file
 
 DEFAULT_MODEL = os.environ.get("CDAF_MODEL", "gemini-2.5-flash")
+DEFAULT_PROVIDER = os.environ.get("CDAF_PROVIDER", "gemini")
+PROVIDERS = ("gemini", "local")
 
 _DETAIL_GUIDANCE = {
     "brief": (
@@ -145,9 +150,19 @@ def generate_sidecar(
     model: str = DEFAULT_MODEL,
     detail: str = "standard",
     api_key: str | None = None,
+    provider: str = DEFAULT_PROVIDER,
+    base_url: str | None = None,
+    scene_threshold: float | None = None,
     usage_out: dict | None = None,
 ) -> Sidecar:
-    """Full pipeline: hash + probe + describe → a ready-to-save Sidecar."""
+    """Full pipeline: hash + probe + describe → a ready-to-save Sidecar.
+
+    provider="gemini" uploads the video to the Gemini Files API (needs a key).
+    provider="local" samples frames and posts them to an OpenAI-compatible
+    endpoint (no key, no cost, footage stays on the machine).
+    """
+    if provider not in PROVIDERS:
+        raise ValueError(f"provider must be one of {list(PROVIDERS)}")
     video = Path(video)
     header = {
         "video": video.name,
@@ -159,7 +174,24 @@ def generate_sidecar(
         "detail": detail,
         "lang": "en",
     }
-    body = describe_video(
-        video, model=model, detail=detail, api_key=api_key, usage_out=usage_out
-    )
+
+    if provider == "local":
+        from . import local  # lazy: keeps ffmpeg/endpoint concerns out of the Gemini path
+
+        threshold = (local.DEFAULT_SCENE_THRESHOLD if scene_threshold is None
+                     else scene_threshold)
+        body = local.describe_video_local(
+            video, model=model, detail=detail,
+            base_url=base_url or local.DEFAULT_BASE_URL,
+            scene_threshold=threshold, usage_out=usage_out
+        )
+        header.update(local.local_header_extras(
+            continuity=True, transcribed="(no speech)" not in body,
+            threshold=threshold
+        ))
+    else:
+        body = describe_video(
+            video, model=model, detail=detail, api_key=api_key, usage_out=usage_out
+        )
+
     return Sidecar(version=SPEC_VERSION, header=header, body=body)

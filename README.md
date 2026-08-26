@@ -50,6 +50,7 @@ at scale, this pattern cut video-workflow AI costs to roughly **1/25th**.
 | **[Spec](#-spec)** | [SPEC.md](SPEC.md) | The normative format definition (v1.0) |
 | **[Engine](#-engine-core-library)** | [cli/cdaf/](cli/cdaf/) | Python library: parse, validate, hash, generate |
 | **[CLI](#-cli)** | [cli/](cli/) | `cdaf` command: generate / validate / read / status |
+| **Local provider** | [cli/cdaf/local.py](cli/cdaf/local.py) | `--local`: generate with a local model, no API key |
 | **[Agent Skill](#-agent-skill)** | [skills/](skills/claude-code/cdaf/SKILL.md) | Teaches agents the sidecar-first protocol · `npx cdaf-skill` |
 | **[Benchmarks](#-benchmarks)** | [benchmarks/](benchmarks/) | Reproducible eval: sidecar vs direct video |
 | **[Paper](#-paper)** | [paper/PREPRINT.md](paper/PREPRINT.md) | arXiv preprint draft built on the benchmark |

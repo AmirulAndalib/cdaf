@@ -1,7 +1,7 @@
 """cdaf — command-line tool for CDAF sidecars.
 
 Commands:
-  generate   Create/refresh .cdaf sidecars for video files (needs Gemini key)
+  generate   Create/refresh .cdaf sidecars (Gemini by default, or a local model)
   validate   Verify a sidecar is well-formed and fresh (hash matches video)
   read       Print a sidecar's body (what an agent should consume)
   status     Report fresh/stale/missing across a directory tree
@@ -76,7 +76,9 @@ def cmd_generate(args: argparse.Namespace) -> int:
         print(f"  generating  {video} ...", flush=True)
         try:
             sc = generate_sidecar(
-                video, model=args.model, detail=args.detail, api_key=args.api_key
+                video, model=args.model, detail=args.detail, api_key=args.api_key,
+                provider=args.provider, base_url=args.base_url,
+                scene_threshold=args.scene_threshold
             )
             save(sc, sidecar)
             print(f"  wrote   {sidecar}")
@@ -157,12 +159,25 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--version", action="version", version=f"cdaf {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    g = sub.add_parser("generate", help="create/refresh sidecars for videos (Gemini BYOK)")
+    g = sub.add_parser("generate", help="create/refresh sidecars for videos")
     g.add_argument("paths", nargs="+", help="video files, sidecars, or directories (recursive)")
     g.add_argument("--model", default=None, help="Gemini model id (default: env CDAF_MODEL or gemini-2.5-flash)")
     g.add_argument("--detail", choices=["brief", "standard", "rich"], default="standard")
     g.add_argument("--force", action="store_true", help="regenerate even if sidecar is fresh")
     g.add_argument("--api-key", default=None, help="Gemini API key (default: env GEMINI_API_KEY)")
+    g.add_argument("--provider", choices=["gemini", "local"], default=None,
+                   help="gemini = Files API, needs a key (default); "
+                        "local = OpenAI-compatible endpoint, no key or cost "
+                        "(default: env CDAF_PROVIDER)")
+    g.add_argument("--local", dest="provider", action="store_const", const="local",
+                   help="shorthand for --provider local")
+    g.add_argument("--scene-threshold", type=float, default=None, metavar="F",
+                   help="local: ffmpeg scene-detect sensitivity, 0-1 (default 0.15). "
+                        "Lower finds more cuts, including low-contrast ones, at the "
+                        "cost of splitting on camera movement")
+    g.add_argument("--base-url", default=None,
+                   help="local endpoint (default: env CDAF_BASE_URL or "
+                        "http://127.0.0.1:8090/v1)")
     g.set_defaults(func=cmd_generate)
 
     v = sub.add_parser("validate", help="check one sidecar is well-formed and fresh")
@@ -180,9 +195,18 @@ def main(argv: list[str] | None = None) -> int:
     s.set_defaults(func=cmd_status)
 
     args = parser.parse_args(argv)
-    if getattr(args, "model", None) is None and args.command == "generate":
-        from .generate import DEFAULT_MODEL
-        args.model = DEFAULT_MODEL
+    if args.command == "generate":
+        from .generate import DEFAULT_PROVIDER
+        if getattr(args, "provider", None) is None:
+            args.provider = DEFAULT_PROVIDER
+        if getattr(args, "model", None) is None:
+            # Each provider has its own default model id.
+            if args.provider == "local":
+                from .local import DEFAULT_LOCAL_MODEL
+                args.model = DEFAULT_LOCAL_MODEL
+            else:
+                from .generate import DEFAULT_MODEL
+                args.model = DEFAULT_MODEL
     return args.func(args)
 
 
