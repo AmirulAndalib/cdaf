@@ -23,7 +23,8 @@ your coding agent checks for a `.cdaf` sidecar and verifies it against the video
 *before* it ever spends tokens watching. Then describe your footage once:
 
 ```bash
-pip install "cdaf[generate]" && cdaf generate ./footage
+pip install "cdaf[generate] @ git+https://github.com/UditAkhourii/cdaf.git#subdirectory=cli"
+cdaf generate ./footage
 ```
 
 ```
@@ -124,7 +125,7 @@ Requires Python ≥ 3.10. Bring your own Gemini API key
 your key, not to us.
 
 ```bash
-pip install ./cli[generate]
+pip install "cdaf[generate] @ git+https://github.com/UditAkhourii/cdaf.git#subdirectory=cli"
 export GEMINI_API_KEY=your-key          # PowerShell: $env:GEMINI_API_KEY="your-key"
 
 cdaf generate ./footage                 # describe every video, skip fresh sidecars
@@ -132,6 +133,9 @@ cdaf status ./footage                   # FRESH / STALE / MISSING report
 cdaf read ./footage/sunset-drone.mp4    # print the description (verifies hash first)
 cdaf validate ./footage/clip.mp4        # exit 0 iff sidecar is well-formed and fresh
 ```
+
+Working from a clone instead? `pip install ./cli[generate]`. A PyPI release
+(`pip install cdaf`) is on the roadmap.
 
 Flags: `--detail brief|standard|rich`, `--model <gemini-model>`, `--force`.
 `validate`/`read`/`status` need **no dependencies and no API key**. Safety lives in
@@ -213,6 +217,7 @@ production case study, integration analysis for agentic editors, limitations.
 
 ## Roadmap
 
+- PyPI release of the `cdaf` CLI (`pip install cdaf`)
 - MCP server exposing `cdaf_read` / `cdaf_status` / `cdaf_generate` to any MCP client
 - Hosted free converter (no local install; bring-your-own-key or free quota)
 - Additional generator backends (Claude, GPT, local VLMs)
