@@ -56,8 +56,8 @@ Format: a `key: value` header between `--- CDAF/1.0` and `---`, then markdown:
 ## How much to trust a fresh sidecar
 
 Freshness proves the sidecar describes *these exact bytes*. It does not prove the
-description is complete or correct — it is the record of one model's pass. Three limits
-matter when a mistake is expensive:
+description is complete or correct — it is generated text, the record of one model's
+pass. Three limits matter when a mistake is expensive:
 
 - **Timestamps are approximate.** Boundaries inferred by a model drift (over a second
   on measured clips), miss real cuts, and occasionally mark cuts that do not exist.
@@ -66,8 +66,6 @@ matter when a mistake is expensive:
   ```bash
   ffmpeg -v error -i clip.mp4 -vf "select='gt(scene,0.1)',metadata=print:file=-" -f null -
   ```
-  If the header carries `x-shot-source: ffmpeg-scene-detect@...`, the boundaries were
-  measured from the container and need no such check.
 
 - **Descriptions can add, not just omit.** Shown a whole video at once, a model may
   narrate the outcome a clip implies but never shows — reporting that a task was
@@ -77,9 +75,23 @@ matter when a mistake is expensive:
   relying on it, and say the sidecar is your source when you report it. An omission is
   a visible gap; an addition reads exactly like a fact.
 
-- **Fine visual state is unreliable.** Strike-through on a list, small or stylised text,
-  subtle motion, and similar details are often missed or reported at chance. If such a
-  detail carries the meaning of the shot, look at the frame.
+- **Fine visual state is unreliable.** Strike-through and other mark-up on a list
+  (crossed out, checked, highlighted), small or stylised text, and subtle motion are
+  often missed or reported at chance. Incidental background text on packaging or
+  labels has produced confident phantom brand names. If such a detail carries the
+  meaning of the shot, look at the frame.
+
+**Provenance keys.** When a producer records how the body was made, `x-` keys tell you
+which parts were measured rather than inferred:
+
+| Key | Means |
+|---|---|
+| `x-shot-source: ffmpeg-scene-detect@<threshold>` | Boundaries came from the container and are frame-exact — no need for the ffmpeg check above. |
+| `x-shot-isolation: per-shot` | Each segment was described without sight of the others, which suppresses invented continuity between shots. |
+| `x-transcript-timing: measured-rms` | Transcript times were measured from audio. `none` means no measurable speech. |
+
+Absent these keys, assume the weaker case: inferred boundaries, whole-video context,
+and guessed transcript times.
 
 None of this argues for re-watching by default — that would forfeit the entire saving.
 Verify the specific claim your decision rests on, not the whole clip.
@@ -125,28 +137,6 @@ pip install "cdaf[generate] @ git+https://github.com/UditAkhourii/cdaf.git#subdi
 Faster per clip and handles whole directories, but calls a paid API. **Ask the user
 before batch-generating a large library**, and tell them roughly how many videos you are
 about to process.
-
-## Reading a sidecar critically
-
-A sidecar is generated text, not ground truth. Header `x-` keys, when present, tell you
-how much to trust which parts:
-
-- `x-shot-isolation: per-shot` — each segment was described without sight of the others,
-  which suppresses invented continuity between shots. Absent this, be sceptical of any
-  claim that a task was **completed**: a generator seeing the whole video at once will
-  narrate the expected outcome even when the footage withholds it, and the fabricated
-  line is indistinguishable from a correct one.
-- `x-shot-source: ffmpeg-scene-detect@<threshold>` — boundaries came from the container
-  and are frame-exact. Absent this, treat segment timestamps as approximate; a
-  model-inferred boundary can drift by a second or more.
-- `x-transcript-timing: measured-rms` — transcript times were measured from audio.
-  `none` means there was no measurable speech. Absent the key entirely, assume the model
-  guessed the times, which it does poorly even when the words are verbatim.
-
-Two things no generator records reliably: the **mark-up state** of on-screen text
-(whether list items are crossed out, checked, or highlighted), and **incidental
-background text** on packaging or labels, which has produced confident phantom brand
-names. If either carries the meaning of a shot, look at the frames.
 
 ## Working across a footage library
 

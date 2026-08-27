@@ -78,20 +78,54 @@ def test_salvage_returns_empty_when_there_is_nothing_to_recover():
     "There is no speech in this audio.",
     "I cannot transcribe this file.",
     "Sorry, the audio appears to be silent.",
+    "Unfortunately, the audio contains no discernible speech.",
+    "It seems the track is silent.",
+    "Please provide an audio file containing speech.",
+    "",
+    "   ",
 ])
 def test_non_transcript_replies_are_recognised(reply):
     """Handed a silent track, a model answers as a chatbot rather than declining.
 
     Such a reply must never reach the sidecar looking like narration.
     """
-    head = reply.strip().lower()[:200]
-    assert any(marker in head for marker in local._NON_TRANSCRIPT)
+    assert local._is_not_a_transcript(reply)
 
 
-def test_real_narration_is_not_mistaken_for_a_refusal():
-    line = "Funny how the things you put off always seem bigger than they are."
-    head = line.strip().lower()[:200]
-    assert not any(marker in head for marker in local._NON_TRANSCRIPT)
+@pytest.mark.parametrize("line", [
+    "Funny how the things you put off always seem bigger than they are.",
+    # Real speech that the earlier substring-anywhere guard discarded outright.
+    "Sorry, I'm late - traffic was awful.",
+    "I cannot believe how well this turned out.",
+    "There is no better way to start the morning.",
+    "I can't wait to show you what we built.",
+    "This bread is trained by decades of tradition.",
+    "The audio guide said to turn left at the chapel.",
+    "It seems simple, but there is no shortcut to a good loaf.",
+])
+def test_real_narration_is_not_mistaken_for_a_refusal(line):
+    """A speaker can say \"sorry\" or \"I cannot\" mid-sentence.
+
+    Only a reply that *opens* with a refusal phrase is treated as one, so ordinary
+    narration is not silently dropped.
+    """
+    assert not local._is_not_a_transcript(line)
+
+
+def test_leading_punctuation_does_not_defeat_the_anchor():
+    """The opening check survives quotes, dashes and stray whitespace."""
+    assert local._is_not_a_transcript('"Sorry, the audio is silent."')
+    assert local._is_not_a_transcript("  - Unfortunately, there is no speech here.")
+    assert local._is_not_a_transcript("“It seems this recording is empty.")
+
+
+def test_a_generic_apology_is_left_alone():
+    """Without a reference to the recording, a refusal-shaped line is just speech.
+
+    The measured-silence short-circuit in _transcribe is what protects a silent
+    track; this guard only has to catch replies that are plainly about the audio.
+    """
+    assert not local._is_not_a_transcript("Sorry, I cannot help with that.")
 
 
 # ------------------------------------------------------------ header extras

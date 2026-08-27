@@ -109,11 +109,58 @@ the most natural pauses."""
 # Replies that are the assistant talking rather than transcribing. Asked to transcribe
 # silence, a model answers as a chatbot instead of declining, and that lands in the
 # sidecar looking like narration.
-_NON_TRANSCRIPT = (
-    "large language model", "i am an ai", "as an ai", "i'm an ai", "trained by",
-    "i cannot", "i can't", "i'm unable", "i am unable", "no speech", "no audible",
-    "no discernible", "there is no", "cannot transcribe", "unable to transcribe", "sorry",
+#
+# Two tiers, because the obvious keyword list also matches things real people say on
+# camera -- "Sorry, I'm late", "I cannot believe this", "There is no better way":
+#
+#   ANYWHERE: assistant self-reference and explicit meta-refusals about transcribing.
+#             Not plausible as narration, so a match anywhere in the opening is enough.
+#   OPENING:  refusal phrasings that ARE plausible narration. A speaker can say them
+#             mid-sentence; an assistant's refusal *opens* with them. Anchored to the
+#             start of the reply, which costs us only a transcript whose very first
+#             words are a refusal phrase.
+_NON_TRANSCRIPT_ANYWHERE = (
+    "large language model", "i am an ai", "i'm an ai", "as an ai",
+    "cannot transcribe", "can't transcribe", "unable to transcribe",
+    "no speech is", "no audible speech", "no discernible speech",
 )
+
+# Phrasings a refusal *opens* with. Each is also something a person might say on
+# camera, so an opener alone is not enough -- see _is_not_a_transcript.
+_REFUSAL_OPENERS = (
+    "sorry", "unfortunately", "i cannot", "i can't", "i'm unable", "i am unable",
+    "there is no", "there's no", "no speech", "no audible", "no discernible",
+    "it appears", "it seems", "please provide",
+    "the audio is", "the audio contains", "the audio appears", "the audio does",
+    "this audio is", "this audio contains", "this audio appears",
+)
+
+# A refusal is *about* the recording. Ordinary narration that merely opens with
+# "Sorry" or "I can't" is not.
+_AUDIO_NOUNS = (
+    "audio", "speech", "sound", "silen", "narration", "track", "recording",
+    "transcri", "spoken", "voice", "dialogue", "words",
+)
+
+
+def _is_not_a_transcript(raw: str) -> bool:
+    """True when a reply reads as the assistant talking rather than transcribing.
+
+    Erring toward discarding is deliberate: a dropped transcript is a visible gap,
+    while a confabulated one reads exactly like narration and cannot be caught
+    downstream. But the error is not free, so a generic opener must be paired with
+    a reference to the recording before the reply is thrown away.
+    """
+    head = raw.strip().lower()
+    if not head:
+        return True
+    if any(marker in head[:200] for marker in _NON_TRANSCRIPT_ANYWHERE):
+        return True
+    opening = head.lstrip("\"'“‘([-— ")
+    if not opening.startswith(_REFUSAL_OPENERS):
+        return False
+    first_sentence = re.split(r"[.!?\n]", opening, maxsplit=1)[0]
+    return any(noun in first_sentence for noun in _AUDIO_NOUNS)
 
 
 # --------------------------------------------------------------------- ffmpeg
@@ -386,8 +433,7 @@ def _transcribe(video: Path, endpoint: _Endpoint) -> list[tuple[float, str]]:
         except GenerationError:
             return []          # no audio encoder, or the endpoint refused the payload
 
-    head = raw.strip().lower()[:200]
-    if not head or any(marker in head for marker in _NON_TRANSCRIPT):
+    if _is_not_a_transcript(raw):
         return []
     lines = [ln.strip() for ln in raw.splitlines() if ln.strip()]
     if len(lines) != len(spans):
